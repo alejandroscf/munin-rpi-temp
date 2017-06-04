@@ -35,7 +35,9 @@ else
 		OK=0
 	     fi 
 	  done
-	  awk "BEGIN { printf \"temp$I.value %2.3f\n\", $temp/1000 }"
+          if [[ "$temp" -lt 50000 ]]; then 
+	     awk "BEGIN { printf \"temp$I.value %2.3f\n\", $temp/1000 }"
+          fi
 	  I=$(($I+1));
 	     
 	done
