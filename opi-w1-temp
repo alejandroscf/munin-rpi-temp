@@ -11,7 +11,7 @@ if [ "$1" == "autoconf" ]; then
          exit 1
      fi
 elif [ "$1" == "config" ]; then
-     echo "graph_title Raspberry Pi OneWire Temperature"
+     echo "graph_title Orange Pi OneWire Temperature"
      echo "graph_vlabel Temperature in Celsius"
      echo "graph_category Sensors"
      I=1;
