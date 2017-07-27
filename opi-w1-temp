@@ -25,7 +25,7 @@ elif [ "$1" == "config" ]; then
 else
 	date >>/var/log/w1-temp.log
 
-	exec 2>> /var/log/w1-temp.log
+	#exec 2>> /var/log/w1-temp.log
 	I=1;
         echo 408000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 	sleep 5
@@ -35,6 +35,8 @@ else
 	  while [ "$OK" -ne 0 ]; do
 	     file=$(</sys/bus/w1/devices/$w1_slave/w1_slave)
 	     temp=$(echo $file | sed -e 's/^.*=//' )
+	     echo "$file" >>/var/log/w1-temp.log
+	     echo . >>/var/log/w1-temp.log
 	     if [[ "$file" =~ "YES" ]] 
 	     then
 		OK=0
