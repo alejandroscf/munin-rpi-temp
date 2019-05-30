@@ -15,18 +15,23 @@ elif [ "$1" == "config" ]; then
      echo "graph_vlabel Temperature in Celsius"
      echo "graph_category Sensors"
      I=1;
-     for w1_slave in $(cat /sys/devices/w1_bus_master1/w1_master_slaves | sort)
-     do
-     	echo "temp$I.warning 30"
-     	echo "temp$I.critical 40"
-     	echo "temp$I.label $w1_slave"
-        I=$((I+1));
-     done
+     if [[ x$(cat /sys/devices/w1_bus_master1/w1_master_slaves) != "xnot found." ]]
+        then
+        for w1_slave in $(cat /sys/devices/w1_bus_master1/w1_master_slaves | sort)
+        do
+     	   echo "temp$I.warning 30"
+     	   echo "temp$I.critical 40"
+           echo "temp$I.label $w1_slave"
+           I=$((I+1));
+        done
+     fi
 else
-	date >>/var/log/w1-temp.log
+     date >>/var/log/w1-temp.log
 
 	#exec 2>> /var/log/w1-temp.log
-	I=1;
+     I=1;
+     if [[ x$(cat /sys/devices/w1_bus_master1/w1_master_slaves) != "xnot found." ]]
+        then
         echo 408000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 	sleep 5
 	for w1_slave in $(cat /sys/devices/w1_bus_master1/w1_master_slaves | sort)
@@ -51,6 +56,7 @@ else
 	     
 	done
         echo 240000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+     fi
 fi
 
 
